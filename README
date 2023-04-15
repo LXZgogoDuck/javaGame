@@ -1,0 +1,39 @@
+If you are new to Github, you can download Github desktop, should be a much easier way to get familiar with Github.
+
+
+
+
+By using the correct Maven file, you only need to worry about installing MySQL.
+You need to install MySQL server on your local device and start the service.
+Remember to use the mysql lines to initialize the database
+
+Basics:
+    1. You need to have at least 1 working Main class/method to run your code
+    2. For JFX projects, you need to implement(override) the start function for initialization
+    3. Call launch(args) in your main method
+
+Tips:
+    1. Make sure to update your pom.xml if you want to add some other dependencies into the project
+    2. To package such a JFX project, you can either:
+        i. use javafx-maven-plugin to compile a cross-platform zip
+        ii. directly package the project as a .jar file if using JDK<=8.0
+        iii. discover other ways to package into .jar file using newer JFX
+    3. !!!!MAKE SURE!!! your .jar/.zip file can run by itself; you may lose pts
+        if we have to manually compile and run your program.
+    4. Maven works well with intellij, make good use of it.
+
+
+#CONTENTS
+JAVAfx:
+    hierarchy: stage->scene->container/layout->controls
+    implementation: fxml+css/in java code
+    corresponding editor: intellij+JFX scene builder/intellij
+    sample codes:   https://www.yiibai.com/javafx/javafx-tutorial-for-beginners.html (chinese)
+                    https://docs.oracle.com/javase/8/javafx/get-started-tutorial/get_start_apps.htm (official samples)
+                    https://github.com/jjenkov/javafx-examples (git repo)
+
+MySQL: need to be familiar with basic sql languages
+    some helpful materials:
+                    https://www.w3schools.com/MySQL/default.asp
+                    https://www.mysqltutorial.org
+                    https://www.runoob.com/mysql/mysql-tutorial.html (chinese)

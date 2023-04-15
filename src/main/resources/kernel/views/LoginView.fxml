@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="outStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.99" prefHeight="640.0" prefWidth="1152.0" styleClass="inputText" stylesheets="@../statics/login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kernel.views.loginController">
+            <children>
+               <VBox fx:id="signUpBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" visible="false">
+                  <StackPane.margin>
+                     <Insets bottom="80.0" left="358.0" right="358.0" top="80.0" />
+                  </StackPane.margin>
+                  <children>
+                     <Label text="User Registration" textAlignment="CENTER" textFill="#ffffff8f">
+                        <VBox.margin>
+                           <Insets />
+                        </VBox.margin>
+                        <font>
+                           <Font size="31.0" />
+                        </font>
+                     </Label>
+                     <TextField fx:id="commonUserUsername" promptText="Username" styleClass="inputText">
+                        <VBox.margin>
+                           <Insets top="5.0" />
+                        </VBox.margin>
+                        <font>
+                           <Font size="21.0" />
+                        </font>
+                     </TextField>
+                     <TextField fx:id="commonUserPassword" promptText="Password" styleClass="inputText">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                        <font>
+                           <Font size="21.0" />
+                        </font>
+                     </TextField>
+                     <TextField fx:id="commonUserTruename" promptText="RealName" styleClass="inputText">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                        <font>
+                           <Font size="21.0" />
+                        </font>
+                     </TextField>
+                     <TextField fx:id="commonUserSid" promptText="#ID" styleClass="inputText">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                        <font>
+                           <Font size="21.0" />
+                        </font>
+                     </TextField>
+                     <TextField fx:id="commonUserTel" promptText="Tel." styleClass="inputText">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                        <font>
+                           <Font size="21.0" />
+                        </font>
+                     </TextField>
+                     <TextField fx:id="commonUserAddress" promptText="Address" styleClass="inputText">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                        <font>
+                           <Font size="21.0" />
+                        </font>
+                     </TextField>
+                     <HBox alignment="CENTER" prefHeight="54.0" prefWidth="250.0" spacing="5.0">
+               <children>
+                  <Button fx:id="saveToDataBaseButton" mnemonicParsing="false" onAction="#handleNewUser" prefHeight="27.0" prefWidth="152.0" styleClass="pinkBG" text="Register" textFill="#ffffff8f">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleBack" text="Back" textFill="#ffffff8f">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="23.0" right="23.0" />
+         </padding>
+      </VBox>
+      <VBox fx:id="loginBox" alignment="CENTER" prefHeight="439.0" prefWidth="494.0">
+         <children>
+            <Label fx:id="loginBoxLabel" text="Duck duck go!" textFill="#ffffff8f">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="usernameField" prefHeight="35.0" prefWidth="252.0" promptText="User Name" scaleShape="false" styleClass="inputText" text="石佳欢">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="21.0" />
+               </font>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </TextField>
+            <PasswordField fx:id="passwordField" prefHeight="28.0" prefWidth="497.0" promptText="Password" styleClass="inputText" text="123">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </PasswordField>
+            <CheckBox fx:id="isAdmin" mnemonicParsing="false" selected="true" text="cheating mode" textFill="#ffffff8f">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </CheckBox>
+            <HBox alignment="CENTER" prefHeight="29.0" prefWidth="252.0" spacing="5.0">
+               <children>
+                  <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" prefHeight="33.0" prefWidth="152.0" text="Login" textFill="#ffffff8f">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="signUpButton" mnemonicParsing="false" onAction="#handleSignUp" prefHeight="34.0" prefWidth="152.0" text="Register" textFill="#ffffff8f">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <StackPane.margin>
+            <Insets bottom="145.0" left="467.0" right="467.0" top="145.0" />
+         </StackPane.margin>
+         <padding>
+            <Insets left="23.0" right="23.0" top="25.0" />
+         </padding>
+      </VBox>
+   </children>
+</StackPane>
