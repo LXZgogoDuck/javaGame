@@ -7,7 +7,7 @@ import kernel.state.Playing;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
+//respond to keyboard input
 public class KeyboardInputs implements KeyListener {
 
     private GamePanel gamePanel;

@@ -59,27 +59,33 @@ public class Playing extends State implements Statemethods{
         levelManager = new LevelManager(game);
         enemyManager = new EnemyManager(this);
         objectManager = new ObjectManager(this);
-        //player loading
+
+        //load the player
         player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE), this,125);
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
         player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
-        //overlay loading
+
+        //load all the overlays for settings
         pauseOverlay = new PauseOverlay(this,game);
         gameOverOverlay = new GameOverOverlay(this);
         levelCompletedOverlay = new LevelCompletedOverlay(this);
         gameCompletedOverlay = new GameCompletedOverlay(this);
-        // bg loading
+
+        // load background pictures
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG);
         bigCloud = LoadSave.GetSpriteAtlas(LoadSave.BIG_CLOUDS);
         smallCloud = LoadSave.GetSpriteAtlas(LoadSave.SMALL_CLOUDS);
         smallCloudsPos = new int[8];
         for (int i = 0; i < smallCloudsPos.length; i++)
             smallCloudsPos[i] = (int) (90 * Game.SCALE) + rnd.nextInt((int) (100 * Game.SCALE));
+
         shipImgs = new BufferedImage[4];
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.SHIP);
         for (int i = 0; i < shipImgs.length; i++)
             shipImgs[i] = temp.getSubimage(i * 78, 0, 78, 72);
+
         rain = new Rain();  //bg rain loading
+
         calcLvlOffset();
         loadStartLevel();
         if (rnd.nextFloat() >= 0.6f)
@@ -167,8 +173,8 @@ public class Playing extends State implements Statemethods{
         objectManager.draw(graphics, xLvlOffset);
         enemyManager.draw(graphics, xLvlOffset);
         player.render(graphics, xLvlOffset);  // arrayIndex out of bounds
-
-//esc_game paused
+        //in different situations of the game,set the corresponding overlays
+        //esc_if game is paused, set "pauseOverlay"
         if (paused) {
             graphics.setColor(new Color(0, 0, 0, 150));
             graphics.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
@@ -192,7 +198,7 @@ public class Playing extends State implements Statemethods{
     public void resetGameCompleted() {
         gameCompleted = false;
     }
-
+    //reset all the "check booleans" to its orginal state_prepare for the next game
     public void resetAll() {
         gameOver = false; paused = false;
         lvlCompleted = false;  playerDying = false;

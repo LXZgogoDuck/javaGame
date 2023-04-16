@@ -10,19 +10,18 @@ import java.awt.*;
 import static kernel.state.Gamestate.*;
 
 public class Game implements Runnable {
-
+// this is common game mode
     private GamePanel gamePanel;
     private Thread gameThread;
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
-
     private Playing playing;
     private Menu menu;
     private GameOptions gameOptions;
     private AudioOptions audioOptions;
     private AudioPlayer audioPlayer;
     public final static int TILES_DEFAULT_SIZE = 32;
-    public final static float SCALE = 1.5f;
+    public final static float SCALE = 1.7f;
     public final static int TILES_IN_WIDTH = 26;
     public final static int TILES_IN_HEIGHT = 14;
     public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
@@ -32,14 +31,14 @@ public class Game implements Runnable {
     private final boolean SHOW_FPS_UPS = true;
 
     public Game() {
-//        System.out.println("size: " + GAME_WIDTH + " : " + GAME_HEIGHT);//1664:896
+        //System.out.println("size: " + GAME_WIDTH + " : " + GAME_HEIGHT);//1664:896
         audioOptions = new AudioOptions(this);
         audioPlayer = new AudioPlayer();
         menu = new Menu(this);
         playing = new Playing(this);
         gameOptions = new GameOptions(this);
         //mark: gameOptions has to be after all the components, otherwise it will give back "null"
-       //set game window
+        //set game window and panel
         gamePanel = new GamePanel(this);
         new GameWindow(gamePanel);
         gamePanel.requestFocusInWindow();
@@ -50,8 +49,8 @@ public class Game implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
-
-    public void update() {//页面更新到最新状态
+    //页面更新到最新状态
+    public void update() {
         switch (Gamestate.state) {
             case MENU -> menu.update();
             case PLAYING -> playing.update();
@@ -59,7 +58,7 @@ public class Game implements Runnable {
             case QUIT -> System.exit(0);
         }
     }
-
+    //draw the components
     @SuppressWarnings("incomplete-switch")
     public void render(Graphics g) {//draw the components
         switch (Gamestate.state) {
@@ -68,8 +67,8 @@ public class Game implements Runnable {
             case OPTIONS -> gameOptions.draw(g);
         }
     }
-    //game loop
 
+    // begin game loop
     @Override
     public void run() {
         double timePerFrame = 1000000000.0 / FPS_SET;
@@ -110,7 +109,6 @@ public class Game implements Runnable {
     public Menu getMenu() {
         return menu;
     }
-
     public Playing getPlaying() {
         return playing;
     }

@@ -167,7 +167,6 @@ public abstract class Enemy extends Entity {
             if (aniIndex >= GetSpriteAmount(enemyType, state)) {
                 if (enemyType == CRABBY || enemyType == SHARK) {
                     aniIndex = 0;
-
                     switch (state) {
                         case ATTACK, HIT -> state = IDLE;
                         case DEAD -> active = false;

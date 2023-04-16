@@ -10,7 +10,7 @@ import java.awt.event.MouseMotionListener;
 
 import static kernel.state.Gamestate.MENU;
 import static kernel.state.Gamestate.PLAYING;
-
+//respond to mouse input
 public class MouseInputs implements MouseListener, MouseMotionListener {
 
     private GamePanel gamePanel;

@@ -31,7 +31,7 @@ public class Menu extends State implements Statemethods {
         loadBackground();
         background = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND_IMG2);
     }
-
+    // load menu background picture and set the position for menu
     private void loadBackground() {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND);
         menuWidth = (int) (backgroundImg.getWidth() * Game.SCALE);
@@ -39,6 +39,7 @@ public class Menu extends State implements Statemethods {
         menuX = Game.GAME_WIDTH / 2 - menuWidth / 2;
         menuY = (int) (25 * Game.SCALE);
     }
+    //load the buttons on the menu including play/options/quit
     private void loadButtons() {
         buttons[0] = new MenuButton(Game.GAME_WIDTH / 2, (int) (130 * Game.SCALE), 0, Gamestate.PLAYING);
         buttons[1] = new MenuButton(Game.GAME_WIDTH / 2, (int) (200 * Game.SCALE), 1, Gamestate.OPTIONS);
@@ -59,7 +60,7 @@ public class Menu extends State implements Statemethods {
         for (MenuButton mb : buttons)
             mb.draw(g);
     }
-
+    //the following functions are used to interacted with the users_ get mouse and keyboard inputs
     @Override
     public void mousePressed(MouseEvent e) {
         for (MenuButton mb : buttons) {

@@ -36,7 +36,7 @@ public class Level {
     public Level(BufferedImage img) {
         this.img = img;
         lvlData = new int[img.getHeight()][img.getWidth()];
-        //load all images
+        //load all images and set the position
         for (int y = 0; y < img.getHeight(); y++){
             for (int x = 0; x < img.getWidth(); x++) {
                 Color c = new Color(img.getRGB(x, y));
@@ -57,7 +57,8 @@ public class Level {
         if (redValue >= 50)  lvlData[y][x] = 0;
         else    lvlData[y][x] = redValue;
     }
-
+    //set the position of the enemies
+    //cool features: the occurance of different enemy charcters is at random
     private void loadEnemies(int greenValue, int x, int y) {
         switch (greenValue) {
             case CRABBY -> {
@@ -70,7 +71,7 @@ public class Level {
             case 100 -> playerSpawn = new Point(x * Game.TILES_SIZE, y * Game.TILES_SIZE);
         }
     }
-
+    //set the objects for the game
     private void loadObjects(int blueValue, int x, int y) {
         switch (blueValue) {
             case BLUE_POTION -> {

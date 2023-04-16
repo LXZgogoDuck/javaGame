@@ -17,6 +17,7 @@ public class GamePanel extends JPanel {
     private cheatingGame cheatingGame;
 
     public GamePanel(Game game) {
+        //add input(keyboard and mouse input into the game panel( for normal game mode)
         mouseInputs = new MouseInputs(this);
         this.game = game;
         setPanelSize();
@@ -24,6 +25,7 @@ public class GamePanel extends JPanel {
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
     }
+    //for cheating game mode
     public GamePanel(cheatingGame cheatingGame){
         mouseInputs = new MouseInputs(this);
         this.cheatingGame = cheatingGame;
@@ -32,11 +34,12 @@ public class GamePanel extends JPanel {
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
     }
+    //set size for the panel
     private void setPanelSize() {
         Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
         setPreferredSize(size);
     }
-
+    //draw components on the panel
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(game != null) game.render(g);

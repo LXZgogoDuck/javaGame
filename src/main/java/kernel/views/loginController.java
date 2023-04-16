@@ -58,6 +58,7 @@ public class loginController {
                 new cheatingGame();
                 return;
             }
+            //if "cheating mode" box is not selected, it will be common game
             new Game();
         } else {
             DialogUtils.tips(mainApp.getPrimaryStage(),"oooh~incorrect username or password.please check again!");
@@ -70,21 +71,23 @@ public class loginController {
     }
     @FXML
     private void handleNewUser() {
+        //if the user already exists, then pop up the alarm
         if (exists(commonUserUsername.getText())) {
             DialogUtils.tips(mainApp.getPrimaryStage(), "User already exist~");
         } else {
+         //if not exists, then pop up "successfully registered" information accordingly
             signUp(commonUserUsername.getText(), commonUserPassword.getText());
             DialogUtils.good(mainApp.getPrimaryStage(),"successfully registered!");
-
             }
 
     }
+    // if click "back" button, then back to the user login surface
     @FXML
     private void handleBack() {
         signUpBox.setVisible(false);
         loginBox.setVisible(true);
     }
-
+    //verify functon__used to verify whether the username and password is correct or not
     private boolean verify(String username, String password) {
         jdbcUtils jdbcUtils = new jdbcUtils();
         jdbcUtils.getConnection();
@@ -100,6 +103,7 @@ public class loginController {
         }
         return false;
     }
+    // check if the user already exist in the database
     private boolean exists(String username) {
         jdbcUtils jdbcUtils = new jdbcUtils();
         jdbcUtils.getConnection();
@@ -114,6 +118,7 @@ public class loginController {
         }
         return false;
     }
+    //sign up__use to add new users including their name and pwd
     private boolean signUp(String username, String password) {
         jdbcUtils jdbcUtils = new jdbcUtils();
         jdbcUtils.getConnection();

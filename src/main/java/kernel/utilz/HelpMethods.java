@@ -14,7 +14,7 @@ public class HelpMethods {
                         return true;
         return false;
     }
-
+// check whether the player can move forward or stop because of the solid blocks
     private static boolean IsSolid(float x, float y, int[][] lvlData) {
         int maxWidth = lvlData[0].length * Game.TILES_SIZE;
         if (x < 0 || x >= maxWidth)
@@ -27,17 +27,18 @@ public class HelpMethods {
         return IsTileSolid((int) xIndex, (int) yIndex, lvlData);
     }
 
-    public static boolean IsProjectileHittingLevel(Projectile p, int[][] lvlData) {
-        return IsSolid(p.getHitbox().x + p.getHitbox().width / 2, p.getHitbox().y + p.getHitbox().height / 2, lvlData);
-    }
-
+    // Will only check if entity touch top water. Can't reach bottom water if not
+    // touched top water.
+    // still not used in the program.
     public static boolean IsEntityInWater(Rectangle2D.Float hitbox, int[][] lvlData) {
-        // Will only check if entity touch top water. Can't reach bottom water if not
-        // touched top water.
         if (GetTileValue(hitbox.x, hitbox.y + hitbox.height, lvlData) != 48)
             if (GetTileValue(hitbox.x + hitbox.width, hitbox.y + hitbox.height, lvlData) != 48)
                 return false;
         return true;
+    }
+
+    public static boolean IsProjectileHittingLevel(Projectile p, int[][] lvlData) {
+        return IsSolid(p.getHitbox().x + p.getHitbox().width / 2, p.getHitbox().y + p.getHitbox().height / 2, lvlData);
     }
 
     private static int GetTileValue(float xPos, float yPos, int[][] lvlData) {
@@ -48,14 +49,12 @@ public class HelpMethods {
 
     public static boolean IsTileSolid(int xTile, int yTile, int[][] lvlData) {
         int value = lvlData[yTile][xTile];
-
         switch (value) {
             case 11, 48, 49:
                 return false;
             default:
                 return true;
         }
-
     }
 
     public static float GetEntityXPosNextToWall(Rectangle2D.Float hitbox, float xSpeed) {

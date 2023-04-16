@@ -13,10 +13,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 
 import static kernel.utilz.Constants.UI.URMButtons.URM_SIZE;
-//check!
-
 public class GameOptions extends State implements Statemethods {
-
     private AudioOptions audioOptions;
     private BufferedImage backgroundImg, optionsBackgroundImg;
     private int bgX, bgY, bgW, bgH;

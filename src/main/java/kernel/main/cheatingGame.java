@@ -6,7 +6,7 @@ import kernel.state.*;
 import kernel.state.Menu;
 
 import java.awt.*;
-
+//the implementation and comment are similar to Game class
 public class cheatingGame implements Runnable{
     private GamePanel gamePanel;
     private Thread gameThread;

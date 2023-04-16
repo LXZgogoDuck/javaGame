@@ -7,7 +7,7 @@ import java.awt.geom.Rectangle2D;
 
 import static kernel.utilz.Constants.Directions.*;
 import static kernel.utilz.HelpMethods.CanMoveHere;
-
+//
 public abstract class Entity {
 
     protected float x, y;

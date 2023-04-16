@@ -13,7 +13,7 @@ public class SoundButton extends PauseButton {
     private boolean mouseOver, mousePressed;
     private boolean muted;
     private int rIndex, cIndex;
-
+//set the size for the sound button and load its image from LOADSAVE class
     public SoundButton(int x, int y, int width, int height) {
         super(x, y, width, height);
         BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.SOUND_BUTTONS);
@@ -22,7 +22,7 @@ public class SoundButton extends PauseButton {
             for (int i = 0; i < soundImgs[j].length; i++)
                 soundImgs[j][i] = temp.getSubimage(i * SOUND_SIZE_DEFAULT, j * SOUND_SIZE_DEFAULT, SOUND_SIZE_DEFAULT, SOUND_SIZE_DEFAULT);
     }
-
+// update the status
     public void update() {
         if (muted)   rIndex = 1;
         else   rIndex = 0;
@@ -39,7 +39,7 @@ public class SoundButton extends PauseButton {
     public void draw(Graphics g) {
         g.drawImage(soundImgs[rIndex][cIndex], x, y, width, height, null);
     }
-
+//different methods to check the button's state
 
     public void setMouseOver(boolean mouseOver) {
         this.mouseOver = mouseOver;

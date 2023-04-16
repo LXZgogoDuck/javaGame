@@ -12,7 +12,6 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 //游戏结束后退出页面
-//yes
 public class GameCompletedOverlay {
 	private Playing playing;
 	private cheatPlay cheatPlay;

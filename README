@@ -1,39 +1,94 @@
-If you are new to Github, you can download Github desktop, should be a much easier way to get familiar with Github.
+**********TUTORIAL for Duckduckgo game************
+#Before running the program
+1.In the kernel/utils/jdbcUtils.java file, please change the PASSWORD into your own password for the database and make
+sure your database is connected.
+2.Please update the pom.'s dependencies before running the program.
+3.Run the "Main" file to run the program.
+4.When you enter the login surface, you can unselect the chatBox"cheating mode" to get into the normal game mode.
+Also, if you want to register for a new account, just click "register" button and enter your user name and password.
+Then, you can see a "user successfully registered" notice with lovely XiaoMai on it!
+5.The audio is a little bit low, so please make sure to turn up the video in your device to get better game experience.
+6.Click "quit" or  just click the red button on the left top of the surface can quit the program.
+
+#Game rules
+1.There are 3 levels for the game. To win the game, you have to kill all the enemies to enter next level.
+When each level is finished, you can see "level completed" overlay and just click the continue button to enter
+the next level.
+2.You can use either "A_W_S_D" or "VK_UP/DOWN/LEFT/RIGHT" to control the motion of the character.
+To attack the enemies, you can click your mouse or use "VK_space".
+3.There's a cheating mode for the game where you won't die anyway.
+4.You can hit the boxes or containers on the floor and there will be potions for you to drink!
+5.When you drink the potions, you can add your blood in the game.
+6.Enjoy the game!
+
+#features for grading
+*basic features
+game implementation
+a good-looking GUI for users to login and register, which is connected to a database.
+*advanced
+1.cheating mode note what you only have to worry about is that your character should not jump into the hole.
+2.audio for the game
+3.animation for the player
+
+#implementations
+1.GUI
+    *I use javafx with css and fxml file to implement a user-friendly login surface for the game. Users can either
+ register or login to their accounts. Specifically, by "onAction =" and write the loginViewController, the program
+ can respond to the users' request and load the corresponding game mode.
+    *The fxml and css files are learned from the demo1 for the "User Management System" given in the tutorial.
+    *By learning from the sample given in the tutorials, I write "jdbcUtils" and other functions to check, verify
+ and add new accounts which all relate with the database
+
+2.GAME & CHEATINGGAME
+    *There are 2 basic modes for the project. I first try to implement the normal game mode. Then change some features
+ to get the cheating mode including infinite blood of the players and better-looking game background.
+    *For the game class, there are four basic states of the game including MENU/PLAYING/OPTION/QUIT.
+ I first set the game panel and game window for the project, in which all the components of the game can be
+ updated and drawn.
+    *One game is a thread and the "run" function is used for game loop learning from the "multithreading"
+ tutorial and game loop tutorial online.
+    *In the game class, all the components are initiated including audioOption/audioPlayer/Menu/Playing etc.
+    *I split the game into four main states(in the package "state"). Considering the similar structure and methods
+ of each states, I write a class and interface (State and Statemethods) for them.{e.g. MENU is a state and has
+ statemethods}
+
+3.PLAYING
+    *The playing class indicates the playing mode. It includes all the game roles and objects.
+    *Game roles: players & enemies
+    @players Learning from the website, I first load the player's image and split it into a 2D array. Within the game
+ loop, the game constantly update the images and then form the animation for the players. Different actions(jump/run/attack……)
+ have different rowIndex. When draw the animation, it actually load all the subimages in a specific row of the array.
+    @players player also has its blood and attacking power. The blood for the player can be changed with potion or its motions.
+
+4.UTILZ package
+LOADSAVE
+    *it is used to save all the images used in the game. Each images has its spring(images.name) and in the "getSpritesAtals" function,
+it returns the bufferedImage requested by the String.
+CONSTANTS
+    *all the basic motions or features are labeled with a constant,which makes it more convenient to call by the program's functions.
+constants include all the fixed constants for the game's components such as directions/image.width&height/Gravity/Speed etc.
+HelpMethods
+    *within this class, all the motions of the character are set. Firstly, the player will get down because of the gravity. Also, he can
+not get into the blocks(have to check whether the tiles of the game is solid or not).(decide where he can move)
+
+5.GAME EFFECTS
+    *There is rain in the background which may occur.
+    *for the background, there are small clouds and big clouds to make the game more beautiful.
+
+6.GAME UI
+    *all the game UI have similar implementation structure and that's why buttons inhirit the"PauseButton" class.
+ In the PauseButton class, I specify the button's size in the constructor and for each specific button, it should load its own image
+ and have its methods.
+    *basic methods for the buttons:
+    update : update the status
+    draw: draw the button on the panel
+    mouseOver/mouseClick: check whether the user clicks the button to respond to that
+
+7.OBJECTS
+    There are four roles in the game and they all have similar structures to implement. So I write a Entity class
+for them to inhirit. All the roles have hitboxs (rectangle). When the rectangle intersects, the enemy can "see the player"
+and start to attack.
 
 
 
 
-By using the correct Maven file, you only need to worry about installing MySQL.
-You need to install MySQL server on your local device and start the service.
-Remember to use the mysql lines to initialize the database
-
-Basics:
-    1. You need to have at least 1 working Main class/method to run your code
-    2. For JFX projects, you need to implement(override) the start function for initialization
-    3. Call launch(args) in your main method
-
-Tips:
-    1. Make sure to update your pom.xml if you want to add some other dependencies into the project
-    2. To package such a JFX project, you can either:
-        i. use javafx-maven-plugin to compile a cross-platform zip
-        ii. directly package the project as a .jar file if using JDK<=8.0
-        iii. discover other ways to package into .jar file using newer JFX
-    3. !!!!MAKE SURE!!! your .jar/.zip file can run by itself; you may lose pts
-        if we have to manually compile and run your program.
-    4. Maven works well with intellij, make good use of it.
-
-
-#CONTENTS
-JAVAfx:
-    hierarchy: stage->scene->container/layout->controls
-    implementation: fxml+css/in java code
-    corresponding editor: intellij+JFX scene builder/intellij
-    sample codes:   https://www.yiibai.com/javafx/javafx-tutorial-for-beginners.html (chinese)
-                    https://docs.oracle.com/javase/8/javafx/get-started-tutorial/get_start_apps.htm (official samples)
-                    https://github.com/jjenkov/javafx-examples (git repo)
-
-MySQL: need to be familiar with basic sql languages
-    some helpful materials:
-                    https://www.w3schools.com/MySQL/default.asp
-                    https://www.mysqltutorial.org
-                    https://www.runoob.com/mysql/mysql-tutorial.html (chinese)
