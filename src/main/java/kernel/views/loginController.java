@@ -18,7 +18,7 @@ public class loginController {
     @FXML
     private Button signUpButton;
     @FXML
-    private CheckBox isAdmin;
+    private CheckBox isCheatingMode;
     @FXML
     private TextField usernameField;
     @FXML
@@ -53,7 +53,7 @@ public class loginController {
     public void handleLogin(){
         if (verify(usernameField.getText(), passwordField.getText())) {
             System.out.println("User checked!");
-            if(isAdmin.isSelected()){
+            if(isCheatingMode.isSelected()){
                 //cheating mode implementation
                 new cheatingGame();
                 return;

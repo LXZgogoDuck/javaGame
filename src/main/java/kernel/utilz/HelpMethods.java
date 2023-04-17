@@ -24,30 +24,24 @@ public class HelpMethods {
         float xIndex = x / Game.TILES_SIZE;
         float yIndex = y / Game.TILES_SIZE;
 
-        return IsTileSolid((int) xIndex, (int) yIndex, lvlData);
+        return ifSolid((int) xIndex, (int) yIndex, lvlData);
     }
 
     // Will only check if entity touch top water. Can't reach bottom water if not
     // touched top water.
     // still not used in the program.
-    public static boolean IsEntityInWater(Rectangle2D.Float hitbox, int[][] lvlData) {
-        if (GetTileValue(hitbox.x, hitbox.y + hitbox.height, lvlData) != 48)
-            if (GetTileValue(hitbox.x + hitbox.width, hitbox.y + hitbox.height, lvlData) != 48)
-                return false;
-        return true;
-    }
 
     public static boolean IsProjectileHittingLevel(Projectile p, int[][] lvlData) {
         return IsSolid(p.getHitbox().x + p.getHitbox().width / 2, p.getHitbox().y + p.getHitbox().height / 2, lvlData);
     }
 
-    private static int GetTileValue(float xPos, float yPos, int[][] lvlData) {
-        int xCord = (int) (xPos / Game.TILES_SIZE);
-        int yCord = (int) (yPos / Game.TILES_SIZE);
-        return lvlData[yCord][xCord];
+    private static int GetTileValue(float xPos, float yPos, int[][] data) {
+        int x = (int) (xPos / Game.TILES_SIZE);
+        int y = (int) (yPos / Game.TILES_SIZE);
+        return data[y][x];
     }
 
-    public static boolean IsTileSolid(int xTile, int yTile, int[][] lvlData) {
+    public static boolean ifSolid(int xTile, int yTile, int[][] lvlData) {
         int value = lvlData[yTile][xTile];
         switch (value) {
             case 11, 48, 49:
@@ -115,7 +109,7 @@ public class HelpMethods {
 
     public static boolean IsAllTilesClear(int xStart, int xEnd, int y, int[][] lvlData) {
         for (int i = 0; i < xEnd - xStart; i++)
-            if (IsTileSolid(xStart + i, y, lvlData))
+            if (ifSolid(xStart + i, y, lvlData))
                 return false;
         return true;
     }
@@ -123,7 +117,7 @@ public class HelpMethods {
     public static boolean IsAllTilesWalkable(int xStart, int xEnd, int y, int[][] lvlData) {
         if (IsAllTilesClear(xStart, xEnd, y, lvlData))
             for (int i = 0; i < xEnd - xStart; i++) {
-                if (!IsTileSolid(xStart + i, y + 1, lvlData))
+                if (!ifSolid(xStart + i, y + 1, lvlData))
                     return false;
             }
         return true;
@@ -144,12 +138,5 @@ public class HelpMethods {
             return IsAllTilesWalkable(firstXTile, secondXTile, yTile, lvlData);
     }
 
-    public static boolean IsSightClear_OLD(int[][] lvlData, Rectangle2D.Float firstHitbox, Rectangle2D.Float secondHitbox, int yTile) {
-        int firstXTile = (int) (firstHitbox.x / Game.TILES_SIZE);
-        int secondXTile = (int) (secondHitbox.x / Game.TILES_SIZE);
-        if (firstXTile > secondXTile)
-            return IsAllTilesWalkable(secondXTile, firstXTile, yTile, lvlData);
-        else
-            return IsAllTilesWalkable(firstXTile, secondXTile, yTile, lvlData);
-    }
+
 }

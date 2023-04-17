@@ -2,7 +2,7 @@ package kernel.utils;
 
 import java.sql.*;
 import java.util.List;
-
+///database utils
 public class jdbcUtils {
     private static final String USER_NAME = "root";
     private static final String PASSWORD = "583646Lxz!";

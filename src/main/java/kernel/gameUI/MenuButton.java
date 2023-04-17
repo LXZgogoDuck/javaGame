@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 
 import static kernel.utilz.Constants.UI.Buttons.*;
 
-
 public class MenuButton {
     private int xPos, yPos, rowIndex, index;
     private int xOffsetCenter = B_WIDTH / 2;
@@ -23,10 +22,10 @@ public class MenuButton {
         this.rowIndex = rowIndex;    this.state = state;
         //load images
         imgs = new BufferedImage[3];
-        BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.MENU_BUTTONS);
+        BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.btns);
         for (int i = 0; i < imgs.length; i++)
-            imgs[i] = temp.getSubimage(i * B_WIDTH_DEFAULT, rowIndex * B_HEIGHT_DEFAULT, B_WIDTH_DEFAULT, B_HEIGHT_DEFAULT);
-//        initiate Bounds;
+            imgs[i] = temp.getSubimage(i * 140, rowIndex * 56, 140, 56);
+        //initiate Bounds;
         boundary = new Rectangle(xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT);
     }
 
@@ -57,7 +56,7 @@ public class MenuButton {
     }
 
     public void applyGamestate() {
-        Gamestate.state = state;
+        Gamestate.gamestate = state;
     }
 
     public void resetBools() {

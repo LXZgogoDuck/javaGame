@@ -16,7 +16,7 @@ public class GameCompletedOverlay {
 	private Playing playing;
 	private cheatPlay cheatPlay;
 	private BufferedImage img;
-	private MenuButton quit, credit;//when game is completed
+	private MenuButton quit;//when game is completed
 	private int imgX, imgY, imgW, imgH;//size for images
 	public GameCompletedOverlay(Playing playing) {
 		this.playing = playing;

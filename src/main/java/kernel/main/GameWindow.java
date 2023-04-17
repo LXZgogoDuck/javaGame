@@ -10,10 +10,10 @@ public class GameWindow {
         jframe = new JFrame("duck duck go！");
         jframe.setDefaultLookAndFeelDecorated(true);
         jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.add(gamePanel);
+        jframe.add(gamePanel); //add panel to the frame
         jframe.setResizable(false);
         jframe.pack();
-        jframe.setLocationRelativeTo(null);
+        jframe.setLocationRelativeTo(null);//set the frame into the center of the window
         jframe.setVisible(true);
         jframe.addWindowFocusListener(new WindowFocusListener() {
 

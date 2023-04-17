@@ -104,9 +104,9 @@ public class Player extends Entity {
                   if (state != DEAD) {
                       state = DEAD; //currentblood<0__set the state to DEAD and play audio for death
                       aniTick = 0;   aniIndex = 0;
-                      playing.setPlayerDying(true);
+                      playing.setDying(true);
                       Game g = playing.getGame();
-                      playing.getGame().getAudioPlayer().playEffect(AudioPlayer.dead);
+//                      playing.getGame().getAudioPlayer().playEffect(AudioPlayer.dead);
                     // Check if player died in air
                       if (!IsEntityOnFloor(hitbox, lvlData)) {
                           inAir = true;   airSpeed = 0;
@@ -114,7 +114,7 @@ public class Player extends Entity {
                   } else if (aniIndex == GetSpriteAmount(DEAD) - 1 && aniTick >= ANI_SPEED - 1) {
                        playing.setGameOver(true);
                        playing.getGame().getAudioPlayer().stopSong();
-                       playing.getGame().getAudioPlayer().playEffect(AudioPlayer.ko);
+//                       playing.getGame().getAudioPlayer().playEffect(AudioPlayer.ko);
                   } else {
                        updateAnimationTick();
                 // Fall if in air_gravity effect
@@ -133,14 +133,14 @@ public class Player extends Entity {
                     state = DEAD;
                     aniTick = 0;   aniIndex = 0;
                     cheatPlay.setPlayerDying(true);
-                    cg.getAudioPlayer().playEffect(AudioPlayer.dead);
+//                    cg.getAudioPlayer().playEffect(AudioPlayer.dead);
                     if (!IsEntityOnFloor(hitbox, lvlData)) {
                         inAir = true;   airSpeed = 0;
                     }
                 } else if (aniIndex == GetSpriteAmount(DEAD) - 1 && aniTick >= ANI_SPEED - 1) {
                     cheatPlay.setGameOver(true);
                     cg.getAudioPlayer().stopSong();
-                    cg.getAudioPlayer().playEffect(AudioPlayer.ko);
+//                    cg.getAudioPlayer().playEffect(AudioPlayer.ko);
                 } else {
                     updateAnimationTick();
                     if (inAir)
@@ -205,13 +205,13 @@ public class Player extends Entity {
         if(playing != null) {
             playing.checkEnemyHit(attackBox);
             playing.checkObjectHit(attackBox);
-            playing.getGame().getAudioPlayer().attacking();
-            playing.getGame().getAudioPlayer().attacking();
+//            playing.getGame().getAudioPlayer().attacking();
+//            playing.getGame().getAudioPlayer().attacking();
         }
         if(playing == null){
             cheatPlay.checkEnemyHit(attackBox);
             cheatPlay.checkObjectHit(attackBox);
-            cheatPlay.getCheatingGame().getAudioPlayer().attacking();
+//            cheatPlay.getCheatingGame().getAudioPlayer().attacking();
         }
     }
 
@@ -369,14 +369,14 @@ public class Player extends Entity {
 
     private void jump(Playing playing) {
         if (inAir)  return;
-        playing.getGame().getAudioPlayer().playEffect(AudioPlayer.jump);
+//        playing.getGame().getAudioPlayer().playEffect(AudioPlayer.jump);
         inAir = true;
         airSpeed = jumpSpeed;
     }
 
     private void jump (cheatPlay cheatPlay){
         if(inAir)  return;
-        cheatPlay.getCheatingGame().getAudioPlayer().playEffect(AudioPlayer.jump);
+//        cheatPlay.getCheatingGame().getAudioPlayer().playEffect(AudioPlayer.jump);
         inAir = true;
         airSpeed = jumpSpeed_cg;
     }
@@ -433,7 +433,7 @@ public class Player extends Entity {
     }
 
     private void loadAnimations() {
-        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
+        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.player);
         animations = new BufferedImage[7][8];
         for (int j = 0; j < animations.length; j++)
             for (int i = 0; i < animations[j].length; i++)

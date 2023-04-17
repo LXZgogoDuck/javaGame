@@ -60,16 +60,12 @@ public abstract class Enemy extends Entity {
         if (state != HIT && state != DEAD) {
             updateInAir(lvlData);
             playing.getObjectManager().checkSpikesTouched(this);
-            if (IsEntityInWater(hitbox, lvlData))
-                hurt(maxBlood);
         }
     }
     protected void inAirChecks(int[][] lvlData, cheatPlay cheatPlay) {
         if (state != HIT && state != DEAD) {
             updateInAir(lvlData);
             cheatPlay.getObjectManager().checkSpikesTouched(this);
-            if (IsEntityInWater(hitbox, lvlData))
-                hurt(maxBlood);
         }
     }
 
@@ -105,7 +101,7 @@ public abstract class Enemy extends Entity {
         if (player.hitbox.x > hitbox.x)   walkDir = RIGHT;
         else    walkDir = LEFT;
     }
-
+//check whether the enemies can see the player
     protected boolean canSeePlayer(int[][] lvlData, Player player) {
         int playerTileY = (int) (player.getHitbox().y / Game.TILES_SIZE);
         if (playerTileY == tileY)
@@ -115,7 +111,7 @@ public abstract class Enemy extends Entity {
             }
         return false;
     }
-
+//check whether the player is in the attacking range
     protected boolean isPlayerInRange(Player player) {
         int absValue = (int) Math.abs(player.hitbox.x - hitbox.x);
         return absValue <= attackDistance * 5;

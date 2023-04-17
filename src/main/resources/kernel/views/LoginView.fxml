@@ -120,12 +120,12 @@
                   <Font size="21.0" />
                </font>
             </PasswordField>
-            <CheckBox fx:id="isAdmin" mnemonicParsing="false" selected="true" text="cheating mode" textFill="#ffffff8f">
+            <CheckBox fx:id="isCheatingMode" mnemonicParsing="false" selected="false" text="cheating mode" textFill="#ffffff8f">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
                <font>
-                  <Font size="17.0" />
+                  <Font size="12.0" />
                </font>
             </CheckBox>
             <HBox alignment="CENTER" prefHeight="29.0" prefWidth="252.0" spacing="5.0">

@@ -1,8 +1,8 @@
 package kernel.components;
 import kernel.main.Game;
 public class Potion extends GameObject {
-    private float Offset;
-    private int maxOffset, hoverDir = 1;
+    private float a;
+    private int max, dirction = 1;
 
     public Potion(int x, int y, int objType) {
         super(x, y, objType);
@@ -10,17 +10,15 @@ public class Potion extends GameObject {
         initHitbox(7, 14);
         xDrawOffset = (int) (3 * Game.SCALE);
         yDrawOffset = (int) (2 * Game.SCALE);
-        maxOffset = (int) (10 * Game.SCALE);
+        max = (int) (10 * Game.SCALE);
     }
 
     public void update() {
         updateAnimationTick();
-       Offset += (0.075f * Game.SCALE * hoverDir);
-        if (Offset >= maxOffset)
-            hoverDir = -1;
-        else if (Offset < 0)
-            hoverDir = 1;
-        hitbox.y = y + Offset;
+        a += (0.075f * Game.SCALE * dirction);
+        if (a >= max)   dirction = -1;
+        else if (a < 0)   dirction = 1;
+        hitbox.y = y + a;
     }
 
 }

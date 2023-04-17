@@ -14,8 +14,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import static kernel.utilz.Constants.ObjectConstants.*;
-import static kernel.utilz.Constants.Projectiles.CANNON_BALL_HEIGHT;
-import static kernel.utilz.Constants.Projectiles.CANNON_BALL_WIDTH;
+import static kernel.utilz.Constants.Projectiles.ball_height;
+import static kernel.utilz.Constants.Projectiles.ball_width;
 import static kernel.utilz.HelpMethods.CanCannonSeePlayer;
 import static kernel.utilz.HelpMethods.IsProjectileHittingLevel;
 
@@ -28,7 +28,7 @@ public class ObjectManager {
 	private BufferedImage spikeImg, cannonBallImg;
 	private ArrayList<Potion> potions;
 	private ArrayList<GameContainer> containers;
-	private ArrayList<Projectile> projectiles = new ArrayList<>();
+	private ArrayList<Projectile> balls = new ArrayList<>();
 	private Level currentLevel;
 
 	public ObjectManager(Playing playing) {
@@ -103,7 +103,7 @@ public class ObjectManager {
 		currentLevel = newLevel;
 		potions = new ArrayList<>(newLevel.getPotions());
 		containers = new ArrayList<>(newLevel.getContainers());
-		projectiles.clear();
+		balls.clear();
 	}
 
 	private void loadImgs() {
@@ -122,17 +122,13 @@ public class ObjectManager {
 		BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.CANNON_ATLAS);
 		for (int i = 0; i < cannonImgs.length; i++)
 			cannonImgs[i] = temp.getSubimage(i * 40, 0, 40, 26);
-		cannonBallImg = LoadSave.GetSpriteAtlas(LoadSave.CANNON_BALL);
-		BufferedImage grassTemp = LoadSave.GetSpriteAtlas(LoadSave.GRASS_ATLAS);
-		grassImgs = new BufferedImage[2];
-		for (int i = 0; i < grassImgs.length; i++)
-			grassImgs[i] = grassTemp.getSubimage(32 * i, 0, 32, 32);
+		cannonBallImg = LoadSave.GetSpriteAtlas(LoadSave.ball);
 	}
 
 	public void update(int[][] lvlData, Player player) {
-		for (Potion p : potions)
-			if (p.isActive())
-				p.update();
+		for (Potion potion : potions)
+			if (potion.isActive())
+				potion.update();
 		for (GameContainer gc : containers)
 			if (gc.isActive())
 				gc.update();
@@ -141,14 +137,15 @@ public class ObjectManager {
 	}
 
 	private void updateProjectiles(int[][] lvlData, Player player) {
-		for (Projectile p : projectiles)
-			if (p.isActive()) {
-				p.updatePos();
-				if (p.getHitbox().intersects(player.getHitbox())) {
-					player.changeHealth(-5);
-					p.setActive(false);
-				} else if (IsProjectileHittingLevel(p, lvlData))
-					p.setActive(false);
+		for (Projectile ball : balls)
+			if (ball.isActive()) {
+				ball.updatePos();
+				if (ball.getHitbox().intersects(player.getHitbox())) {
+					player.changeHealth(-3);
+					//once hit, the player's blood will be cut by 3, then the ball cannot hit again
+					ball.setActive(false);
+				} else if (IsProjectileHittingLevel(ball, lvlData))
+					ball.setActive(false);
 			}
 	}
 
@@ -187,7 +184,7 @@ public class ObjectManager {
 		if (c.getObjType() == CANNON_LEFT)
 			dir = -1;
 
-		projectiles.add(new Projectile((int) c.getHitbox().x, (int) c.getHitbox().y, dir));
+		balls.add(new Projectile((int) c.getHitbox().x, (int) c.getHitbox().y, dir));
 	}
 
 	public void draw(Graphics g, int xLvlOffset) {
@@ -195,12 +192,13 @@ public class ObjectManager {
 		drawContainers(g, xLvlOffset);
 		drawTraps(g, xLvlOffset);
 		drawCannons(g, xLvlOffset);
-		drawProject(g, xLvlOffset);
+		drawBalls(g, xLvlOffset);
 	}
-	private void drawProject(Graphics g, int xLvlOffset) {
-		for (Projectile p : projectiles)
+	//draw connon balls shooting outside
+	private void drawBalls(Graphics g, int xLvlOffset) {
+		for (Projectile p : balls)
 			if (p.isActive())
-				g.drawImage(cannonBallImg, (int) (p.getHitbox().x - xLvlOffset), (int) (p.getHitbox().y), CANNON_BALL_WIDTH, CANNON_BALL_HEIGHT, null);
+				g.drawImage(cannonBallImg, (int) (p.getHitbox().x - xLvlOffset), (int) (p.getHitbox().y), ball_width, ball_height, null);
 	}
 
 	private void drawCannons(Graphics g, int xLvlOffset) {

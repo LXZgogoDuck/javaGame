@@ -24,15 +24,13 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     public void mouseDragged(MouseEvent e) {
         Game g = gamePanel.getGame();
         if (g != null) {
-            switch (Gamestate.state) {
+            switch (Gamestate.gamestate) {
                 case PLAYING -> gamePanel.getGame().getPlaying().mouseDragged(e);
-                case OPTIONS -> gamePanel.getGame().getGameOptions().mouseDragged(e);
             }
         }
         if (g == null){
-            switch (Gamestate.state) {
+            switch (Gamestate.gamestate) {
                 case PLAYING -> gamePanel.getCheatingGame().getCheatPlay().mouseDragged(e);
-                case OPTIONS -> gamePanel.getCheatingGame().getGameOptions().mouseDragged(e);
             }
         }
     }
@@ -42,15 +40,13 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     public void mouseMoved(MouseEvent e) {
         Game g = gamePanel.getGame();
         if (g != null) {
-            switch (Gamestate.state) {
+            switch (Gamestate.gamestate) {
                 case MENU -> gamePanel.getGame().getMenu().mouseMoved(e);
                 case PLAYING -> gamePanel.getGame().getPlaying().mouseMoved(e);
-                case OPTIONS -> gamePanel.getGame().getGameOptions().mouseMoved(e);
             }
-        if (g == null){   switch (Gamestate.state) {
+        if (g == null){   switch (Gamestate.gamestate) {
                     case MENU -> gamePanel.getCheatingGame().getMenu().mouseMoved(e);
                     case PLAYING -> gamePanel.getCheatingGame().getCheatPlay().mouseMoved(e);
-                    case OPTIONS -> gamePanel.getCheatingGame().getGameOptions().mouseMoved(e);
                 }
             }
         }
@@ -61,11 +57,11 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     public void mouseClicked(MouseEvent e) {
         Game g = gamePanel.getGame();
         if(g != null) {
-            switch (Gamestate.state) {
+            switch (Gamestate.gamestate) {
                 case PLAYING -> gamePanel.getGame().getPlaying().mouseClicked(e);
             }
         }
-        else switch (Gamestate.state) {
+        else switch (Gamestate.gamestate) {
             case PLAYING -> gamePanel.getCheatingGame().getCheatPlay().mouseClicked(e);
         }
     }
@@ -75,16 +71,14 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     public void mousePressed(MouseEvent e) {
         Game g = gamePanel.getGame();
         if(g != null) {
-            switch (Gamestate.state) {
+            switch (Gamestate.gamestate) {
                 case MENU -> gamePanel.getGame().getMenu().mousePressed(e);
                 case PLAYING -> gamePanel.getGame().getPlaying().mousePressed(e);
-                case OPTIONS -> gamePanel.getGame().getGameOptions().mousePressed(e);
             }
         }
-        else switch (Gamestate.state) {
+        else switch (Gamestate.gamestate) {
             case MENU -> gamePanel.getCheatingGame().getMenu().mousePressed(e);
             case PLAYING -> gamePanel.getCheatingGame().getCheatPlay().mousePressed(e);
-            case OPTIONS -> gamePanel.getCheatingGame().getGameOptions().mousePressed(e);
         }
     }
 
@@ -93,16 +87,14 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     public void mouseReleased(MouseEvent e) {
         Game g = gamePanel.getGame();
         if(g != null) {
-            switch (Gamestate.state) {
+            switch (Gamestate.gamestate) {
                 case MENU -> gamePanel.getGame().getMenu().mouseReleased(e);
                 case PLAYING -> gamePanel.getGame().getPlaying().mouseReleased(e);
-                case OPTIONS -> gamePanel.getGame().getGameOptions().mouseReleased(e);
             }
         }
-        else  switch (Gamestate.state) {
+        else  switch (Gamestate.gamestate) {
             case MENU -> gamePanel.getCheatingGame().getMenu().mouseReleased(e);
             case PLAYING -> gamePanel.getCheatingGame().getCheatPlay().mouseReleased(e);
-            case OPTIONS -> gamePanel.getCheatingGame().getGameOptions().mouseReleased(e);
         }
     }
 

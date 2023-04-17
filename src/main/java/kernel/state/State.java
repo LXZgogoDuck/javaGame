@@ -21,9 +21,8 @@ public class State {
     public State(cheatingGame cheatingGame){
         this.cheatingGame = cheatingGame;
     }
-
-    public boolean isIn(MouseEvent e, MenuButton mb) {
-        return mb.getBounds().contains(e.getX(), e.getY());
+    public boolean isIn(MouseEvent event, MenuButton menuButton) {
+        return menuButton.getBounds().contains(event.getX(), event.getY());
     }
 
     public Game getGame() {
@@ -37,9 +36,9 @@ public class State {
     public void setGamestate(Gamestate state) {
         switch (state) {
             case PLAYING -> game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
-            case MENU -> game.getAudioPlayer().getSong(AudioPlayer.MENU_1);
+            case MENU -> game.getAudioPlayer().getSong(AudioPlayer.menu);
         }
-        Gamestate.state = state;
+        Gamestate.gamestate = state;
     }
 
 }

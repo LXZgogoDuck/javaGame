@@ -25,7 +25,7 @@ public class GameOverOverlay {
 	public GameOverOverlay(Playing playing) {
 		this.playing = playing;
 		//load gameover images
-		img = LoadSave.GetSpriteAtlas(LoadSave.DEATH_SCREEN);
+		img = LoadSave.GetSpriteAtlas(LoadSave.dead);
 		imgX = Game.GAME_WIDTH / 2 - imgW / 2;
 		imgY = (int) (100 * Game.SCALE);
 		imgW = (int) (img.getWidth() * Game.SCALE);
@@ -34,7 +34,7 @@ public class GameOverOverlay {
 	}
 	public GameOverOverlay(cheatPlay cheatPlay) {
 		this.cheatPlay = cheatPlay;
-		img = LoadSave.GetSpriteAtlas(LoadSave.DEATH_SCREEN);
+		img = LoadSave.GetSpriteAtlas(LoadSave.dead);
 		imgX = Game.GAME_WIDTH / 2 - imgW / 2;
 		imgY = (int) (100 * Game.SCALE);
 		imgW = (int) (img.getWidth() * Game.SCALE);

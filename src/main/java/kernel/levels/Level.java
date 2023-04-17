@@ -20,13 +20,11 @@ public class Level {
     private int[][] lvlData;
     private ArrayList<Crabby> crabs = new ArrayList<>();
     private ArrayList<Pinkstar> pinkstars = new ArrayList<>();
-    private ArrayList<Shark> sharks = new ArrayList<>();
     private ArrayList<Potion> potions = new ArrayList<>();
+    private ArrayList<Shark> sharks = new ArrayList<>();
     private ArrayList<Spike> spikes = new ArrayList<>();
     private ArrayList<GameContainer> containers = new ArrayList<>();
     private ArrayList<Cannon> cannons = new ArrayList<>();
-//    private ArrayList<Grass> grass = new ArrayList<>();
-
     private int lvlTilesWide;
     private int maxTilesOffset;
     private int maxLvlOffsetX;
@@ -49,7 +47,7 @@ public class Level {
             }
         }
         lvlTilesWide = img.getWidth();
-        maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
+        maxTilesOffset = lvlTilesWide - Game.tiles_width;
         maxLvlOffsetX = Game.TILES_SIZE * maxTilesOffset;
     }
 
@@ -82,13 +80,13 @@ public class Level {
             case RED_POTION -> {
                 potions.add(new Potion(x*Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
                 double r = Math.random();
-                if (r <= 0.3) cannons.add(new Cannon(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
+                if (r <= 0.4) cannons.add(new Cannon(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
             }
             case BOX, BARREL -> containers.add(new GameContainer(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
             case SPIKE -> {
                 spikes.add(new Spike(x * Game.TILES_SIZE, y * Game.TILES_SIZE, SPIKE));
                 double r = Math.random();
-                if (r >= 0.8)
+                if (r >= 0.6)
                     sharks.add(new Shark(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
             }
         }

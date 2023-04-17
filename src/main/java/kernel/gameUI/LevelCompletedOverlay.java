@@ -11,9 +11,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import static kernel.utilz.Constants.UI.URMButtons.URM_SIZE;
-
+//the overlay after each level is completed
 public class LevelCompletedOverlay {
-//yes
     private Playing playing;
     private cheatPlay cheatPlay;
     private UrmButton menu, another;
@@ -64,7 +63,7 @@ public class LevelCompletedOverlay {
     public void update() {
         another.update();   menu.update();
     }
-
+//check whether the mouse is inside the buttons
     private boolean ifInside(UrmButton b, MouseEvent e) {
         return b.getBounds().contains(e.getX(), e.getY());
     }

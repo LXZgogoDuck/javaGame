@@ -13,7 +13,7 @@ public class Pinkstar extends Enemy {
 	private boolean preRoll = true;
 	private int tickSinceLastDmgToPlayer;
 	private int tickAfterRollInIdle;
-	private int rollDurationTick, rollDuration = 300;
+	private int rollDurationTick, rollDuration = 200;
 
 	public Pinkstar(float x, float y) {
 		super(x, y, PINKSTAR_WIDTH, PINKSTAR_HEIGHT, PINKSTAR);
@@ -61,7 +61,11 @@ public class Pinkstar extends Enemy {
 					} else {
 						move(lvlData, cheatPlay);
 						checkDmgToPlayer(cheatPlay.getPlayer());
-						checkRollOver(cheatPlay);
+						rollDurationTick++;
+						if (rollDurationTick >= rollDuration) {
+							rollOver(cheatPlay);
+							rollDurationTick = 0;
+						}
 					}
 					break;
 				case HIT:
@@ -108,7 +112,11 @@ public class Pinkstar extends Enemy {
 					} else {
 						move(lvlData, playing);
 						checkDmgToPlayer(playing.getPlayer());
-						checkRollOver(playing);
+						rollDurationTick++;
+						if (rollDurationTick >= rollDuration) {
+							rollOver(playing);
+							rollDurationTick = 0;
+						}
 					}
 					break;
 				case HIT:
@@ -183,23 +191,6 @@ public class Pinkstar extends Enemy {
 		}
 		changeWalkDir();
 	}
-
-
-	private void checkRollOver(Playing playing) {
-		rollDurationTick++;
-		if (rollDurationTick >= rollDuration) {
-			rollOver(playing);
-			rollDurationTick = 0;
-		}
-	}
-	private void checkRollOver(cheatPlay cheatPlay) {
-		rollDurationTick++;
-		if (rollDurationTick >= rollDuration) {
-			rollOver(cheatPlay);
-			rollDurationTick = 0;
-		}
-	}
-
 
 	private void rollOver(Playing playing) {
 		newState(IDLE);

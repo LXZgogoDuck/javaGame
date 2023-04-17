@@ -1,7 +1,6 @@
 package kernel.main;
 
 import kernel.audio.AudioPlayer;
-import kernel.gameUI.AudioOptions;
 import kernel.state.*;
 import kernel.state.Menu;
 
@@ -14,24 +13,20 @@ public class cheatingGame implements Runnable{
     private final int UPS_SET = 200;
     private cheatPlay cheatPlay;
     private Menu menu;
-    private GameOptions gameOptions;
-    private AudioOptions audioOptions;
     private AudioPlayer audioPlayer;
-    public final static int TILES_DEFAULT_SIZE = 32;
+    public final static int tiles_def = 32;
     public final static float SCALE = 1.5f;
     public final static int TILES_IN_WIDTH = 26;
     public final static int TILES_IN_HEIGHT = 14;
-    public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
+    public final static int TILES_SIZE = (int) (tiles_def * SCALE);
     public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
     public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
-    private final boolean SHOW_FPS_UPS = true;
+    private final boolean showFPS_UPS = true;
 
     public cheatingGame() {
-        audioOptions = new AudioOptions(this);
         audioPlayer = new AudioPlayer();
         menu = new Menu(this);
         cheatPlay = new cheatPlay(this);
-        gameOptions = new GameOptions(this);
         gamePanel = new GamePanel(this);
         new GameWindow(gamePanel);
         gamePanel.requestFocusInWindow();
@@ -43,20 +38,18 @@ public class cheatingGame implements Runnable{
     }
 
     public void update() {
-        switch (Gamestate.state) {
+        switch (Gamestate.gamestate) {
             case MENU -> menu.update();
             case PLAYING -> cheatPlay.update();
-            case OPTIONS -> gameOptions.update();
             case QUIT -> System.exit(0);
         }
     }
 
     @SuppressWarnings("incomplete-switch")
     public void render(Graphics g) {
-        switch (Gamestate.state) {
+        switch (Gamestate.gamestate) {
             case MENU -> menu.draw(g);
             case PLAYING -> cheatPlay.draw(g);
-            case OPTIONS -> gameOptions.draw(g);
         }
     }
 
@@ -81,7 +74,7 @@ public class cheatingGame implements Runnable{
                 gamePanel.repaint();
                 frames++;   deltaF--;
             }
-            if (SHOW_FPS_UPS)
+            if (showFPS_UPS)
                 if (System.currentTimeMillis() - lastCheck >= 1000) {
                     lastCheck = System.currentTimeMillis();
                     System.out.println("FPS: " + frames + " | UPS: " + updates);
@@ -90,7 +83,7 @@ public class cheatingGame implements Runnable{
         }
     }
     public void windowFocusLost() {
-        if (Gamestate.state == Gamestate.PLAYING)
+        if (Gamestate.gamestate == Gamestate.PLAYING)
             cheatPlay.getPlayer().resetDirBooleans();
     }
 
@@ -101,12 +94,6 @@ public class cheatingGame implements Runnable{
         return cheatPlay;
     }
 
-    public GameOptions getGameOptions() {
-        return gameOptions;
-    }
-    public AudioOptions getAudioOptions() {
-        return audioOptions;
-    }
     public AudioPlayer getAudioPlayer() {
         return audioPlayer;
     }

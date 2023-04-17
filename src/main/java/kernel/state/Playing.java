@@ -21,11 +21,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static java.lang.Float.POSITIVE_INFINITY;
-import static kernel.utilz.Constants.Environment.*;
 
-public class Playing extends State implements Statemethods{
+public class Playing extends State {
     private Player player;
-//    private Player player2;
     private LevelManager levelManager;
     private EnemyManager enemyManager;
     private ObjectManager objectManager;
@@ -39,16 +37,12 @@ public class Playing extends State implements Statemethods{
     private int leftBorder = (int) (0.25 * Game.GAME_WIDTH);
     private int rightBorder = (int) (0.75 * Game.GAME_WIDTH);
     private int maxLvlOffsetX;
-    private BufferedImage backgroundImg, bigCloud, smallCloud, shipImgs[];
-    private int[] smallCloudsPos;
+    private BufferedImage backgroundImg;
     private Random rnd = new Random();
     private boolean lvlCompleted;
     private boolean gameCompleted;
     private boolean gameOver;
     private boolean playerDying;
-    private boolean drawShip = true;
-    private int shipAni, shipTick, shipDir = 1;
-    private float shipHeightDelta, shipHeightChange = 0.05f * Game.SCALE;
 
     public Playing(Game game) {
         super(game);
@@ -69,20 +63,8 @@ public class Playing extends State implements Statemethods{
         gameCompletedOverlay = new GameCompletedOverlay(this);
 
         // load background pictures
-        backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG);
-        bigCloud = LoadSave.GetSpriteAtlas(LoadSave.BIG_CLOUDS);
-        smallCloud = LoadSave.GetSpriteAtlas(LoadSave.SMALL_CLOUDS);
-        smallCloudsPos = new int[8];
-        for (int i = 0; i < smallCloudsPos.length; i++)
-            smallCloudsPos[i] = (int) (90 * Game.SCALE) + rnd.nextInt((int) (100 * Game.SCALE));
-
-        shipImgs = new BufferedImage[4];
-        BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.SHIP);
-        for (int i = 0; i < shipImgs.length; i++)
-            shipImgs[i] = temp.getSubimage(i * 78, 0, 78, 72);
-
+        backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG_2);
         rain = new Rain();  //bg rain loading
-
         calcLvlOffset();
         loadStartLevel();
         if (rnd.nextFloat() >= 0.6f)
@@ -94,7 +76,6 @@ public class Playing extends State implements Statemethods{
         levelManager.loadNextLevel();
         player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
         resetAll();
-        drawShip = false;
     }
 
     private void loadStartLevel() {
@@ -106,7 +87,6 @@ public class Playing extends State implements Statemethods{
         maxLvlOffsetX = levelManager.getCurrentLevel().getLvlOffset();
     }
 
-    @Override
     public void update() {
         if (lvlCompleted)
             levelCompletedOverlay.update();
@@ -124,28 +104,9 @@ public class Playing extends State implements Statemethods{
             player.update();
             enemyManager.update(levelManager.getCurrentLevel().getLevelData());
             checkCloseToBorder();
-            if (drawShip)
-                updateShipAni();
         }
     }
 
-    private void updateShipAni() {
-        shipTick++;
-        if (shipTick >= 35) {
-            shipTick = 0;
-            shipAni++;
-            if (shipAni >= 4)
-                shipAni = 0;
-        }
-        shipHeightDelta += shipHeightChange * shipDir;
-        shipHeightDelta = Math.max(Math.min(10 * Game.SCALE, shipHeightDelta), 0);
-
-        if (shipHeightDelta == 0)
-            shipDir = 1;
-        else if (shipHeightDelta == 10 * Game.SCALE)
-            shipDir = -1;
-
-    }
 
     private void checkCloseToBorder() {
         int playerX = (int) player.getHitbox().x;
@@ -158,31 +119,19 @@ public class Playing extends State implements Statemethods{
         xLvlOffset = Math.max(Math.min(xLvlOffset, maxLvlOffsetX), 0);
     }
 
-    @Override
     public void draw(Graphics graphics) {
         graphics.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
-        drawClouds(graphics);
         if (drawRain)  rain.draw(graphics, xLvlOffset);
-        if (drawShip)  graphics.drawImage(shipImgs[shipAni], (int) (100 * Game.SCALE) - xLvlOffset, (int) ((288 * Game.SCALE) + shipHeightDelta), (int) (78 * Game.SCALE), (int) (72 * Game.SCALE), null);
         levelManager.draw(graphics, xLvlOffset);
         objectManager.draw(graphics, xLvlOffset);
         enemyManager.draw(graphics, xLvlOffset);
         player.render(graphics, xLvlOffset);  // arrayIndex out of bounds
-        //in different situations of the game,set the corresponding overlays
         if (gameOver)
             gameOverOverlay.draw(graphics);
         else if (gameCompleted)
             gameCompletedOverlay.draw(graphics);
         else if (lvlCompleted)
             levelCompletedOverlay.draw(graphics);
-    }
-
-    private void drawClouds(Graphics g) {
-        for (int i = 0; i < 4; i++)
-            g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE), BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
-
-        for (int i = 0; i < smallCloudsPos.length; i++)
-            g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
     }
 
     public void resetGameCompleted() {
@@ -205,11 +154,9 @@ public class Playing extends State implements Statemethods{
     public void checkObjectHit(Rectangle2D.Float attackBox) {
         objectManager.checkObjectHit(attackBox);
     }
-
     public void checkEnemyHit(Rectangle2D.Float attackBox) {
         enemyManager.checkEnemyHit(attackBox);
     }
-
     public void checkPotionTouched(Rectangle2D.Float hitbox) {
         objectManager.checkObjectTouched(hitbox);
     }
@@ -218,7 +165,6 @@ public class Playing extends State implements Statemethods{
         objectManager.checkSpikesTouched(p);
     }
 
-    @Override
     public void mouseClicked(MouseEvent e) {
         if (!gameOver) {
             if (e.getButton() == MouseEvent.BUTTON1)
@@ -228,7 +174,6 @@ public class Playing extends State implements Statemethods{
         }
     }
 //either clicking mouse or press space key can attack enemy!
-    @Override
     public void keyPressed(KeyEvent e) {
         if (!gameOver && !gameCompleted && !lvlCompleted)
             switch (e.getKeyCode()) {
@@ -251,7 +196,6 @@ public class Playing extends State implements Statemethods{
             }
     }
 
-    @Override
     public void keyReleased(KeyEvent e) {
         if (!gameOver && !gameCompleted && !lvlCompleted)
             switch (e.getKeyCode()) {
@@ -274,10 +218,8 @@ public class Playing extends State implements Statemethods{
     }
 
     public void mouseDragged(MouseEvent e) {
-
     }
 
-    @Override
     public void mousePressed(MouseEvent e) {
         if (gameOver)
             gameOverOverlay.mousePressed(e);
@@ -288,7 +230,6 @@ public class Playing extends State implements Statemethods{
 
     }
 
-    @Override
     public void mouseReleased(MouseEvent e) {
         if (gameOver)
             gameOverOverlay.mouseReleased(e);
@@ -298,7 +239,6 @@ public class Playing extends State implements Statemethods{
             gameCompletedOverlay.mouseReleased(e);
     }
 
-    @Override
     public void mouseMoved(MouseEvent e) {
         if (gameOver)
             gameOverOverlay.mouseMoved(e);
@@ -328,10 +268,6 @@ public class Playing extends State implements Statemethods{
         this.maxLvlOffsetX = lvlOffset;
     }
 
-    public void unpauseGame() {
-        paused = false;
-    }
-
     public Player getPlayer() {
         return player;
     }
@@ -348,7 +284,7 @@ public class Playing extends State implements Statemethods{
         return levelManager;
     }
 
-    public void setPlayerDying(boolean playerDying) {
+    public void setDying(boolean playerDying) {
         this.playerDying = playerDying;
     }
 }

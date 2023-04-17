@@ -1,7 +1,7 @@
 package kernel.main;
 
 import kernel.audio.AudioPlayer;
-import kernel.gameUI.AudioOptions;
+//import kernel.gameUI.AudioOptions;
 import kernel.state.*;
 import kernel.state.Menu;
 
@@ -13,30 +13,29 @@ public class Game implements Runnable {
 // this is common game mode
     private GamePanel gamePanel;
     private Thread gameThread;
-    private final int FPS_SET = 120;
-    private final int UPS_SET = 200;
+    private final int fps = 120;
+    private final int ups = 200;
     private Playing playing;
     private Menu menu;
-    private GameOptions gameOptions;
+//    private GameOptions gameOptions;
     private AudioPlayer audioPlayer;
-    private AudioOptions audioOptions;
-    public final static int TILES_DEFAULT_SIZE = 32;
-    public final static float SCALE = 1.7f;
-    public final static int TILES_IN_WIDTH = 26;
-    public final static int TILES_IN_HEIGHT = 14;
-    public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
-    public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
-    public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
+//    private AudioOptions audioOptions;
+    public final static int tiles_def = 32; //最原始的尺寸
 
-    private final boolean SHOW_FPS_UPS = true;
+    public final static float SCALE = 1.7f;
+    public final static int tiles_width = 26;
+    public final static int tiles_height = 14;
+    public final static int TILES_SIZE = (int) (tiles_def * SCALE);
+    public final static int GAME_WIDTH = TILES_SIZE * tiles_width;
+    public final static int GAME_HEIGHT = TILES_SIZE * tiles_height;
+
+    private final boolean showFPS_UPS = true;
 
     public Game() {
         //System.out.println("size: " + GAME_WIDTH + " : " + GAME_HEIGHT);//1664:896
         audioPlayer = new AudioPlayer();
-        audioOptions = new AudioOptions(this);
         menu = new Menu(this);
         playing = new Playing(this);
-        gameOptions = new GameOptions(this);
         //mark: gameOptions has to be after all the components, otherwise it will give back "null"
         //set game window and panel
         gamePanel = new GamePanel(this);
@@ -51,48 +50,46 @@ public class Game implements Runnable {
     }
     //页面更新到最新状态
     public void update() {
-        switch (Gamestate.state) {
+        switch (Gamestate.gamestate) {
             case MENU -> menu.update();
             case PLAYING -> playing.update();
-            case OPTIONS -> gameOptions.update();
-            case QUIT -> System.exit(0);
+            case QUIT -> System.exit(0); //if click "exist", then quit the game
         }
     }
     //draw the components
     @SuppressWarnings("incomplete-switch")
     public void render(Graphics g) {//draw the components
-        switch (Gamestate.state) {
+        switch (Gamestate.gamestate) {
             case MENU -> menu.draw(g);
             case PLAYING -> playing.draw(g);
-            case OPTIONS -> gameOptions.draw(g);
         }
     }
 
     // begin game loop
     @Override
     public void run() {
-        double timePerFrame = 1000000000.0 / FPS_SET;
-        double timePerUpdate = 1000000000.0 / UPS_SET;
-        long previousTime = System.nanoTime();
-        int frames = 0;   int updates = 0;
+        double timePerFrame = 1000000000.0 / fps;
+        double timePerUpdate = 1000000000.0 / ups;
+        long previous = System.nanoTime();
         long lastCheck = System.currentTimeMillis();
-        double deltaU = 0;   double deltaF = 0;
+        int frames = 0;      int updates = 0;
+        double dU = 0;    double dF = 0;
 
         while (true) {
-            long currentTime = System.nanoTime();
-            deltaU += (currentTime - previousTime) / timePerUpdate;
-            deltaF += (currentTime - previousTime) / timePerFrame;
-            previousTime = currentTime;
+            long current = System.nanoTime();
+            dU += (current - previous) / timePerUpdate;
+            dF += (current - previous) / timePerFrame;
+            previous = current;
 
-            if (deltaU >= 1) {
-                update();  updates++;
-                deltaU--;
+            if (dU >= 1) {
+                update();   updates++;
+                dU--;
             }
-            if (deltaF >= 1) {
+            if (dF >= 1) {
                 gamePanel.repaint();
-                frames++;   deltaF--;
+                frames++;   dF--;
             }
-            if (SHOW_FPS_UPS)
+            if (showFPS_UPS)
                 if (System.currentTimeMillis() - lastCheck >= 1000) {
                     lastCheck = System.currentTimeMillis();
                     System.out.println("FPS: " + frames + " | UPS: " + updates);
@@ -102,7 +99,7 @@ public class Game implements Runnable {
     }
 
     public void windowFocusLost() {
-        if (Gamestate.state == Gamestate.PLAYING)
+        if (Gamestate.gamestate == Gamestate.PLAYING)
             playing.getPlayer().resetDirBooleans();
     }
 
@@ -112,11 +109,7 @@ public class Game implements Runnable {
     public Playing getPlaying() {
         return playing;
     }
-    public GameOptions getGameOptions() {
-        return gameOptions;
-    }
     public AudioPlayer getAudioPlayer() {
         return audioPlayer;
     }
-    public AudioOptions getAudioOptions(){ return audioOptions;}
 }

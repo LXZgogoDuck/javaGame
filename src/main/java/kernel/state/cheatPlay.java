@@ -20,7 +20,6 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import static java.lang.Float.POSITIVE_INFINITY;
-import static kernel.utilz.Constants.Environment.*;
 /*
     ideal cheating mode: the player is driving the ship,and when the ship touch the enemy, the enemy will die immediately_
     need to figure out
@@ -29,7 +28,7 @@ import static kernel.utilz.Constants.Environment.*;
      3.when game is completed, there's special bonus: surprises!
 
  */
-public class cheatPlay extends State implements Statemethods{
+public class cheatPlay extends State{
     private Player player;
     private LevelManager levelManager;
     private EnemyManager enemyManager;
@@ -40,19 +39,16 @@ public class cheatPlay extends State implements Statemethods{
     private Rain rain;
     private boolean drawRain;
     private boolean paused = false;
-    private int xLvlOffset;
+    private int xOff;
     private int leftBorder = (int) (0.25 * Game.GAME_WIDTH);
     private int rightBorder = (int) (0.75 * Game.GAME_WIDTH);
-    private int maxLvlOffsetX;
+    private int maxOffX;
     private BufferedImage backgroundImg, bigCloud, smallCloud, shipImgs[];
     private Random rnd = new Random();
     private boolean lvlCompleted;
     private boolean gameCompleted;
     private boolean gameOver;
     private boolean playerDying;
-    private boolean drawShip = true;
-    private int shipAni, shipTick, shipDir = 1;
-    private float shipHeightDelta, shipHeightChange = 0.05f * Game.SCALE;
 
     public cheatPlay(cheatingGame cheatingGame) {
         super(cheatingGame);
@@ -83,7 +79,6 @@ public class cheatPlay extends State implements Statemethods{
         levelManager.loadNextLevel();
         player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
         resetAll();
-        drawShip = false;
     }
 
     private void loadStartLevel() {
@@ -92,10 +87,9 @@ public class cheatPlay extends State implements Statemethods{
     }
 
     private void calcLvlOffset() {
-        maxLvlOffsetX = levelManager.getCurrentLevel().getLvlOffset();
+        maxOffX = levelManager.getCurrentLevel().getLvlOffset();
     }
 
-    @Override
     public void update() {
         if (lvlCompleted)
             levelCompletedOverlay.update();
@@ -107,54 +101,33 @@ public class cheatPlay extends State implements Statemethods{
             player.update();
         else {
             if (drawRain)
-                rain.update(xLvlOffset);
+                rain.update(xOff);
             levelManager.update();
             objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
             player.update();
             enemyManager.update(levelManager.getCurrentLevel().getLevelData());
             checkCloseToBorder();
-            if (drawShip)
-                updateShipAni();
         }
-    }
-
-    private void updateShipAni() {
-        shipTick++;
-        if (shipTick >= 35) {
-            shipTick = 0;
-            shipAni++;
-            if (shipAni >= 4)
-                shipAni = 0;
-        }
-        shipHeightDelta += shipHeightChange * shipDir;
-        shipHeightDelta = Math.max(Math.min(10 * Game.SCALE, shipHeightDelta), 0);
-
-        if (shipHeightDelta == 0)
-            shipDir = 1;
-        else if (shipHeightDelta == 10 * Game.SCALE)
-            shipDir = -1;
-
     }
 
     private void checkCloseToBorder() {
         int playerX = (int) player.getHitbox().x;
-        int diff = playerX - xLvlOffset;
+        int diff = playerX - xOff;
 
         if (diff > rightBorder)
-            xLvlOffset += diff - rightBorder;
+            xOff += diff - rightBorder;
         else if (diff < leftBorder)
-            xLvlOffset += diff - leftBorder;
-        xLvlOffset = Math.max(Math.min(xLvlOffset, maxLvlOffsetX), 0);
+            xOff += diff - leftBorder;
+        xOff = Math.max(Math.min(xOff, maxOffX), 0);
     }
 //draw all the components on the cheating game including background/enemies/objects/player.
-    @Override
     public void draw(Graphics graphics) {
         graphics.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
-        if (drawRain)  rain.draw(graphics, xLvlOffset);
-        levelManager.draw(graphics, xLvlOffset);
-        objectManager.draw(graphics, xLvlOffset);
-        enemyManager.draw(graphics, xLvlOffset);
-        player.render(graphics, xLvlOffset);  // arrayIndex out of bounds
+        if (drawRain)  rain.draw(graphics, xOff);
+        levelManager.draw(graphics, xOff);
+        objectManager.draw(graphics, xOff);
+        enemyManager.draw(graphics, xOff);
+        player.render(graphics, xOff);  // arrayIndex out of bounds
 
 //esc_game paused
         if (gameOver)
@@ -171,7 +144,7 @@ public class cheatPlay extends State implements Statemethods{
     }
 
     public void resetAll() {
-        gameOver = false; paused = false;
+        gameOver = false;
         lvlCompleted = false;  playerDying = false;
         drawRain = false;
         if (rnd.nextFloat() >= 0.6f)   drawRain = true; //possibility to have rain
@@ -199,7 +172,7 @@ public class cheatPlay extends State implements Statemethods{
         objectManager.checkSpikesTouched_2(p);
     }
 
-    @Override
+
     public void mouseClicked(MouseEvent e) {
         if (!gameOver) {
             if (e.getButton() == MouseEvent.BUTTON1)
@@ -209,7 +182,7 @@ public class cheatPlay extends State implements Statemethods{
         }
     }
     //either clicking mouse or press space key can attack enemy!
-    @Override
+
     public void keyPressed(KeyEvent e) {
         if (!gameOver && !gameCompleted && !lvlCompleted)
             switch (e.getKeyCode()) {
@@ -225,14 +198,12 @@ public class cheatPlay extends State implements Statemethods{
                     player.setRight(true);  break;
                 case KeyEvent.VK_W:
                     player.setJump(true);  break;
-                case KeyEvent.VK_ESCAPE:
-                    paused = !paused;
                 case KeyEvent.VK_SPACE:
                     player.setAttacking(true); break;
             }
     }
 
-    @Override
+
     public void keyReleased(KeyEvent e) {
         if (!gameOver && !gameCompleted && !lvlCompleted)
             switch (e.getKeyCode()) {
@@ -257,7 +228,7 @@ public class cheatPlay extends State implements Statemethods{
     public void mouseDragged(MouseEvent e) {
     }
 
-    @Override
+
     public void mousePressed(MouseEvent e) {
         if (gameOver)
             gameOverOverlay.mousePressed(e);
@@ -268,7 +239,7 @@ public class cheatPlay extends State implements Statemethods{
 
     }
 
-    @Override
+
     public void mouseReleased(MouseEvent e) {
         if (gameOver)
             gameOverOverlay.mouseReleased(e);
@@ -278,7 +249,7 @@ public class cheatPlay extends State implements Statemethods{
             gameCompletedOverlay.mouseReleased(e);
     }
 
-    @Override
+
     public void mouseMoved(MouseEvent e) {
         if (gameOver)
             gameOverOverlay.mouseMoved(e);
@@ -305,11 +276,7 @@ public class cheatPlay extends State implements Statemethods{
     }
 
     public void setMaxLvlOffset(int lvlOffset) {
-        this.maxLvlOffsetX = lvlOffset;
-    }
-
-    public void unpauseGame() {
-        paused = false;
+        this.maxOffX = lvlOffset;
     }
 
     public Player getPlayer() {
@@ -328,7 +295,7 @@ public class cheatPlay extends State implements Statemethods{
         return levelManager;
     }
 
-    public void setPlayerDying(boolean playerDying) {
-        this.playerDying = playerDying;
+    public void setPlayerDying(boolean deathState) {
+        this.playerDying = deathState;
     }
 }

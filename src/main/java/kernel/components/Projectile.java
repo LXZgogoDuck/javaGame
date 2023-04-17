@@ -12,16 +12,16 @@ public class Projectile {
 	private boolean active = true;
 
 	public Projectile(int x, int y, int dir) {
-		int xOff = (int) (-3 * Game.SCALE);
+		int xSet = (int) (-3 * Game.SCALE);
 		int yOff = (int) (5 * Game.SCALE);
 		if (dir == 1)
-			xOff = (int) (29 * Game.SCALE);
-		hitbox = new Rectangle2D.Float(x + xOff, y + yOff, CANNON_BALL_WIDTH, CANNON_BALL_HEIGHT);
+			xSet = (int) (29 * Game.SCALE);
+		hitbox = new Rectangle2D.Float(x + xSet, y + yOff, ball_width, ball_height);
 		this.dir = dir;
 	}
 
 	public void updatePos() {
-		hitbox.x += dir * SPEED;
+		hitbox.x += dir * speed;
 	}
 
 	public Rectangle2D.Float getHitbox() {
