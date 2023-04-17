@@ -9,7 +9,6 @@ import kernel.main.Game;
 import kernel.utilz.LoadSave;
 
 public class Rain {
-
 	private Point2D.Float[] drops;
 	private Random rand;
 	private float rainSpeed = 1.25f;

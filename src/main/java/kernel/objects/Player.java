@@ -18,7 +18,6 @@ import static kernel.utilz.Constants.PlayerConstants.*;
 import static kernel.utilz.HelpMethods.*;
 
 public class Player extends Entity {
-
     private BufferedImage[][] animations;
     private boolean moving = false, attacking = false;
     private boolean left, right, jump;
@@ -28,6 +27,7 @@ public class Player extends Entity {
 
     // Jumping / Gravity
     private float jumpSpeed = -2.25f * Game.SCALE;
+    private float jumpSpeed_cg = -3.25f * Game.SCALE;
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
 
     // StatusBarUI
@@ -82,7 +82,7 @@ public class Player extends Entity {
         super(x, y, width, height);
         this.cheatPlay = cheatPlay;
         this.state = IDLE;
-        this.maxBlood = maxBlood;   //set maximized blood
+        this.maxBlood = maxBlood;   //set maximized blood to infinitely many
         this.currentBlood = maxBlood;   //set the current health to the maximum
         this.walkSpeed = Game.SCALE * 1.0f;
         loadAnimations();
@@ -100,25 +100,25 @@ public class Player extends Entity {
         updateHealthBar();
         updatePowerBar();
         if (currentBlood <= 0) {
-            if(playing != null){
+            if(playing != null)   {  //for the normal game mode updates
                   if (state != DEAD) {
-                      state = DEAD;
+                      state = DEAD; //currentblood<0__set the state to DEAD and play audio for death
                       aniTick = 0;   aniIndex = 0;
                       playing.setPlayerDying(true);
                       Game g = playing.getGame();
                       playing.getGame().getAudioPlayer().playEffect(AudioPlayer.dead);
-                // Check if player died in air
+                    // Check if player died in air
                       if (!IsEntityOnFloor(hitbox, lvlData)) {
                           inAir = true;   airSpeed = 0;
                       }
-            } else if (aniIndex == GetSpriteAmount(DEAD) - 1 && aniTick >= ANI_SPEED - 1) {
-                playing.setGameOver(true);
-                playing.getGame().getAudioPlayer().stopSong();
-                playing.getGame().getAudioPlayer().playEffect(AudioPlayer.ko);
-            } else {
-                updateAnimationTick();
+                  } else if (aniIndex == GetSpriteAmount(DEAD) - 1 && aniTick >= ANI_SPEED - 1) {
+                       playing.setGameOver(true);
+                       playing.getGame().getAudioPlayer().stopSong();
+                       playing.getGame().getAudioPlayer().playEffect(AudioPlayer.ko);
+                  } else {
+                       updateAnimationTick();
                 // Fall if in air_gravity effect
-                if (inAir)
+                  if (inAir)
                     if (CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
                         hitbox.y += airSpeed;
                         airSpeed += GRAVITY;
@@ -126,7 +126,7 @@ public class Player extends Entity {
                         inAir = false;
                   }
             return;
-        }
+        } //else_for the cheating game mode
             else {
                 cheatingGame cg = cheatPlay.getCheatingGame();
                 if (state != DEAD) {
@@ -311,7 +311,10 @@ public class Player extends Entity {
     }
     private void updatePos() {
         moving = false;
-        if (jump)  jump();
+        if (jump) {
+            if(playing != null)   jump(playing);
+            else  jump(cheatPlay);
+        }
         if (!inAir)
             if (!powerAttackActive)
                 if ((!left && !right) || (right && left))
@@ -364,12 +367,18 @@ public class Player extends Entity {
         moving = true;
     }
 
-    private void jump() {
+    private void jump(Playing playing) {
         if (inAir)  return;
-        if(playing != null) playing.getGame().getAudioPlayer().playEffect(AudioPlayer.jump);
-        if(playing == null) cheatPlay.getCheatingGame().getAudioPlayer().playEffect(AudioPlayer.jump);
+        playing.getGame().getAudioPlayer().playEffect(AudioPlayer.jump);
         inAir = true;
         airSpeed = jumpSpeed;
+    }
+
+    private void jump (cheatPlay cheatPlay){
+        if(inAir)  return;
+        cheatPlay.getCheatingGame().getAudioPlayer().playEffect(AudioPlayer.jump);
+        inAir = true;
+        airSpeed = jumpSpeed_cg;
     }
 
     private void resetInAir() {
@@ -467,7 +476,7 @@ public class Player extends Entity {
     public void setJump(boolean jump) {
         this.jump = jump;
     }
-
+    //reset all the setting booleans to false
     public void resetAll() {
         resetDirBooleans();
         inAir = false;  attacking = false;   moving = false; //set all the motions to false

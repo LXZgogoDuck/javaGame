@@ -5,7 +5,6 @@ import kernel.effects.Rain;
 import kernel.gameUI.GameCompletedOverlay;
 import kernel.gameUI.GameOverOverlay;
 import kernel.gameUI.LevelCompletedOverlay;
-import kernel.gameUI.PauseOverlay;
 import kernel.levels.LevelManager;
 import kernel.main.Game;
 import kernel.main.cheatingGame;
@@ -35,7 +34,6 @@ public class cheatPlay extends State implements Statemethods{
     private LevelManager levelManager;
     private EnemyManager enemyManager;
     private ObjectManager objectManager;
-    private PauseOverlay pauseOverlay;
     private GameOverOverlay gameOverOverlay;
     private GameCompletedOverlay gameCompletedOverlay;
     private LevelCompletedOverlay levelCompletedOverlay;
@@ -47,7 +45,6 @@ public class cheatPlay extends State implements Statemethods{
     private int rightBorder = (int) (0.75 * Game.GAME_WIDTH);
     private int maxLvlOffsetX;
     private BufferedImage backgroundImg, bigCloud, smallCloud, shipImgs[];
-    private int[] smallCloudsPos;
     private Random rnd = new Random();
     private boolean lvlCompleted;
     private boolean gameCompleted;
@@ -68,21 +65,11 @@ public class cheatPlay extends State implements Statemethods{
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
         player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
         //overlay loading
-        pauseOverlay = new PauseOverlay(this,cheatingGame);
         gameOverOverlay = new GameOverOverlay(this);
         levelCompletedOverlay = new LevelCompletedOverlay(this);
         gameCompletedOverlay = new GameCompletedOverlay(this);
         // bg loading
-        backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG);
-        bigCloud = LoadSave.GetSpriteAtlas(LoadSave.BIG_CLOUDS);
-        smallCloud = LoadSave.GetSpriteAtlas(LoadSave.SMALL_CLOUDS);
-        smallCloudsPos = new int[8];
-        for (int i = 0; i < smallCloudsPos.length; i++)
-            smallCloudsPos[i] = (int) (90 * Game.SCALE) + rnd.nextInt((int) (100 * Game.SCALE));
-        shipImgs = new BufferedImage[4];
-        BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.SHIP);
-        for (int i = 0; i < shipImgs.length; i++)
-            shipImgs[i] = temp.getSubimage(i * 78, 0, 78, 72);
+        backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BG_IMG3);
         rain = new Rain();  //bg rain loading
         calcLvlOffset();
         loadStartLevel();
@@ -110,9 +97,7 @@ public class cheatPlay extends State implements Statemethods{
 
     @Override
     public void update() {
-        if (paused)
-            pauseOverlay.update();
-        else if (lvlCompleted)
+        if (lvlCompleted)
             levelCompletedOverlay.update();
         else if (gameCompleted)
             gameCompletedOverlay.update();
@@ -161,24 +146,18 @@ public class cheatPlay extends State implements Statemethods{
             xLvlOffset += diff - leftBorder;
         xLvlOffset = Math.max(Math.min(xLvlOffset, maxLvlOffsetX), 0);
     }
-
+//draw all the components on the cheating game including background/enemies/objects/player.
     @Override
     public void draw(Graphics graphics) {
         graphics.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
-        drawClouds(graphics);
         if (drawRain)  rain.draw(graphics, xLvlOffset);
-        if (drawShip)  graphics.drawImage(shipImgs[shipAni], (int) (100 * Game.SCALE) - xLvlOffset, (int) ((288 * Game.SCALE) + shipHeightDelta), (int) (78 * Game.SCALE), (int) (72 * Game.SCALE), null);
         levelManager.draw(graphics, xLvlOffset);
         objectManager.draw(graphics, xLvlOffset);
         enemyManager.draw(graphics, xLvlOffset);
         player.render(graphics, xLvlOffset);  // arrayIndex out of bounds
 
 //esc_game paused
-        if (paused) {
-            graphics.setColor(new Color(0, 0, 0, 150));
-            graphics.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
-            pauseOverlay.draw(graphics);
-        } else if (gameOver)
+        if (gameOver)
             gameOverOverlay.draw(graphics);
         else if (gameCompleted)
             gameCompletedOverlay.draw(graphics);
@@ -186,13 +165,6 @@ public class cheatPlay extends State implements Statemethods{
             levelCompletedOverlay.draw(graphics);
     }
 
-    private void drawClouds(Graphics g) {
-        for (int i = 0; i < 4; i++)
-            g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE), BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
-
-        for (int i = 0; i < smallCloudsPos.length; i++)
-            g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
-    }
 
     public void resetGameCompleted() {
         gameCompleted = false;
@@ -283,17 +255,12 @@ public class cheatPlay extends State implements Statemethods{
     }
 
     public void mouseDragged(MouseEvent e) {
-        if (!gameOver && !gameCompleted && !lvlCompleted)
-            if (paused)
-                pauseOverlay.mouseDragged(e);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         if (gameOver)
             gameOverOverlay.mousePressed(e);
-        else if (paused)
-            pauseOverlay.mousePressed(e);
         else if (lvlCompleted)
             levelCompletedOverlay.mousePressed(e);
         else if (gameCompleted)
@@ -305,8 +272,6 @@ public class cheatPlay extends State implements Statemethods{
     public void mouseReleased(MouseEvent e) {
         if (gameOver)
             gameOverOverlay.mouseReleased(e);
-        else if (paused)
-            pauseOverlay.mouseReleased(e);
         else if (lvlCompleted)
             levelCompletedOverlay.mouseReleased(e);
         else if (gameCompleted)
@@ -317,8 +282,6 @@ public class cheatPlay extends State implements Statemethods{
     public void mouseMoved(MouseEvent e) {
         if (gameOver)
             gameOverOverlay.mouseMoved(e);
-        else if (paused)
-            pauseOverlay.mouseMoved(e);
         else if (lvlCompleted)
             levelCompletedOverlay.mouseMoved(e);
         else if (gameCompleted)

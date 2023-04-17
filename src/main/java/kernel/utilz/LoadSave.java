@@ -41,6 +41,7 @@ public class LoadSave {
     public static final String WATER_TOP = "water_atlas_animation.png";
     public static final String WATER_BOTTOM = "water.png";
     public static final String SHIP = "ship.png";
+    public static final String PLAYING_BG_IMG3 = "img_1.png";
 //returns the images requested by the String.
     public static BufferedImage GetSpriteAtlas(String fileName) {
         BufferedImage img = null;

@@ -26,9 +26,9 @@ To attack the enemies, you can click your mouse or use "VK_space".
 game implementation
 a good-looking GUI for users to login and register, which is connected to a database.
 *advanced
-1.cheating mode note what you only have to worry about is that your character should not jump into the hole.
-2.audio for the game
-3.animation for the player
+1.audio for the game
+2.animation for the player
+3.cheating mode for the player
 
 #implementations
 1.GUI
@@ -88,7 +88,6 @@ not get into the blocks(have to check whether the tiles of the game is solid or 
     There are four roles in the game and they all have similar structures to implement. So I write a Entity class
 for them to inhirit. All the roles have hitboxs (rectangle). When the rectangle intersects, the enemy can "see the player"
 and start to attack.
-
 
 
 

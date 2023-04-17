@@ -18,8 +18,8 @@ public class Game implements Runnable {
     private Playing playing;
     private Menu menu;
     private GameOptions gameOptions;
-    private AudioOptions audioOptions;
     private AudioPlayer audioPlayer;
+    private AudioOptions audioOptions;
     public final static int TILES_DEFAULT_SIZE = 32;
     public final static float SCALE = 1.7f;
     public final static int TILES_IN_WIDTH = 26;
@@ -32,8 +32,8 @@ public class Game implements Runnable {
 
     public Game() {
         //System.out.println("size: " + GAME_WIDTH + " : " + GAME_HEIGHT);//1664:896
-        audioOptions = new AudioOptions(this);
         audioPlayer = new AudioPlayer();
+        audioOptions = new AudioOptions(this);
         menu = new Menu(this);
         playing = new Playing(this);
         gameOptions = new GameOptions(this);
@@ -115,10 +115,8 @@ public class Game implements Runnable {
     public GameOptions getGameOptions() {
         return gameOptions;
     }
-    public AudioOptions getAudioOptions() {
-        return audioOptions;
-    }
     public AudioPlayer getAudioPlayer() {
         return audioPlayer;
     }
+    public AudioOptions getAudioOptions(){ return audioOptions;}
 }
