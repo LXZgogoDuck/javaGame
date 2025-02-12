@@ -1,5 +1,4 @@
 # javaGame
-*This is CSC1004 java project.
 # Game rules:
 1. There are 3 levels for the game. To win the game, you have to kill all the enemies to enter next level.
 2. You can use either "A_W_S_D" or "VK_UP/DOWN/LEFT/RIGHT" to control the motion of the character.
